@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html th:replace="~{template :: layout(~{::title}, ~{::section})}" >
+	<head>
+		<meta charset="UTF-8" />
+		<title th:text="#{index.title}">Insert title here</title>
+
+	</head>
+	<body>
+		<section>
+			<div  class="container spacer">
+			<a th:href="@{form}" th:text="#{index.saisie}"></a>
+		</div>
+		<div class="container spacer">
+			<form th:action="@{index}" th:method="get">
+				<div class="form-group">
+					<label th:text="#{index.motCle}"></label>
+					<input type="text" name="motCle" th:value="${motCle}" />
+					<button type="submit" th:text="#{index.chercher}"></button>
+				</div>
+			</form>
+		</div>
+		<div class="container spacer">
+			<table class="table table-striped">
+	
+				<thead>
+					<tr>
+						<th th:text = "#{index.id}"></th>
+						<th th:text = "#{index.nom}"></th>
+						<th th:text = "#{index.date}"></th>
+						<th th:text = "#{index.email}"></th>
+						<th th:text = "#{index.photo}"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each = "e : ${pageEtudiants.content}">
+						<td th:text = "${e.id}"></td>
+						<td th:text = "${e.nom}"></td>
+						<td th:text = "${e.dateNaissance}"></td>
+						<td th:text = "${e.email}"></td>
+<!-- 						<td th:text = "${e.photo}"></td> -->
+						<td>
+							<img class="img-circle" th:src="@{getPhoto(idEt=${e.id})}" width="100" height="100">
+						</td>
+						<td>
+							<a onclick='return confirm ("Ete vous sure ? ")' th:href="@{supprimer(id=${e.id})}">Supprimer</a>
+						</td>
+						<td>
+							<a  th:href="@{edit(id=${e.id})}">Edit</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="container ">
+			<ul class = "pagination">
+<!-- 				th:class nous permet d'avoir une condition pour l'attribut class -->
+				<li th:class="${p == pageCourante}? active : _" th:each="p : ${pages}" > 
+					<a th:href="@{index(page = ${p},motCle = ${motCle})}" th:text="${p}"></a> 
+				</li>
+			</ul>
+		</div>
+		</section>
+	</body>
+</html>
